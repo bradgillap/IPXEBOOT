@@ -9,3 +9,7 @@ https://gist.github.com/robinsmidsrod/2234639
 
 Reasoning: 
 I put this up because I feel like there aren't enough examples of IPXE on the Internet just yet. 
+
+Screenshot of pxeboot menu.
+
+https://github.com/bradgillap/IPXEBOOT/blob/master/screenshot.png
