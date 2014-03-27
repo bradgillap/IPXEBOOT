@@ -24,7 +24,7 @@ cpuid --ext 29 && set arch x64 || set arch x86
 cpuid --ext 29 && set archl amd64 || set archl i386
 
 ###################### BEGIN VERSION CONSTANTS ##################################
-
+set master-version March-2014
 set hdt-version 0.5.20
 set pcisniffer-version 1.5
 set freedos-version 1.1
@@ -50,7 +50,7 @@ set ntpassword-version 2014-02-01
 
 ###################### BEGIN MAIN MENU ##########################################
  
-menu Brads Amazing Boot Updated March 2014
+menu IPXE SUPERBOOT UPDATED ${master-version}
   item --gap --		         ------------------------- System Info -----------------------------------
   item start                     Architecture: ${arch}
   item --key 1 hdt          (1)  Hardware Detection Tool ${hdt-version}
