@@ -3,6 +3,10 @@
 #beginning of file incase of failure
 :start 
 
+# Only use this if you compiled your ipxe with console and png options see http://ipxe.org/cmd/console
+console --x 1024 --y 768
+console --picture http://10.0.0.1/boot.png  #1024x768 Graphic
+
 # Some constants I didn't need right away but may be helpful if you have long addresses or directories to keep track of.
 
 set boot-url http://10.0.0.1  #Example http://10.0.0.1  No trailing slashes.
@@ -51,16 +55,16 @@ set ntpassword-version 2014-02-01
 ###################### BEGIN MAIN MENU ##########################################
  
 menu IPXE SUPERBOOT UPDATED ${master-version}
-  item --gap --		         ------------------------- System Info -----------------------------------
+  item --gap --		         ------------------------- System Info -------------------------------------------------------------------------------------
   item start                     Architecture: ${arch}
   item --key 1 hdt          (1)  Hardware Detection Tool ${hdt-version}
   item --key 2 pcisniffer   (2)  PCI Sniffer ${pcisniffer-version}
-  item --gap --             ------------------------- Operating Systems Install ----------------------
+  item --gap --             ------------------------- Operating Systems Install -------------------------------------------------------------------------
   item --key 3 freedos      (3)  FreeDOS ${freedos-version} IMG
   item --key 4 ubuntu-installer-remote (4) Ubuntu ${archl} Dynamic Net Install HTTP WEB
   item --key 5 winpe8       (5)  WinPE Win8 ${winpe8-version} 200 MB+ WIM
   item --key 6 winpe7       (6)  WinPE Win7 ${winpe7-version} 200 MB+ WIM
-  item --gap --             ------------------------- Live Boot Environments -------------------------
+  item --gap --             ------------------------- Live Boot Environments ----------------------------------------------------------------------------
   item --key 7 bootrepair   (7)  Boot Repair ${arch} ${bootrepair-version} NFS
   item --key 8 pmagic       (8)  Parted Magic ${pmagic-version} 400+ MB ISO
   item --key 9 systemrescue (9)  System Rescue ${systemrescue-version} HTTP
@@ -71,13 +75,13 @@ menu IPXE SUPERBOOT UPDATED ${master-version}
   item --key e deblive64    (E)  Debian Live ONLY X64 ${deblive64-version} Wheezy HTTP
   item --key f ophcrackxp   (F)  Ophcrack Live XP ${ophcrackxp-version} 400mb+ ISO
   item --key g ophcrackvista   (G)  Ophcrack Live Vista ${ophcrackvista-version} 400+ MB ISO
-  item --gap --             ------------------------- Tools and utilities ----------------------------
+  item --gap --             ------------------------- Tools and utilities -------------------------------------------------------------------------------
   item --key h memtestx86   (H)  Memtestx86 ${memtestx86-version} ISO 
   item --key i hdat         (I)  Hdat ${hdat-version} Hard Drive Diagnostics IMG
   item --key j spinrite     (J)  SpinRite ${spinrite-version} HD Repair IMG
   item --key k dban         (K)  Dban ${dban-version} Wipe Warning! DESTRUCTIVE! IMG
   item --key l ntpassword   (L)  Offline NT Password and Registry Editor ${ntpassword-version} WARNING! EFS ENCRYPTION! ISO
-  item --gap --             ------------------------- Advanced options -------------------------------
+  item --gap --             ------------------------- Advanced options -----------------------------------------------------------------------------------
   item --key m config       (M)  Configure settings
   item --key n external     (N)  External Linux Installs http://boot.salstar.sk/
   item --key s shell        (S)  Drop to iPXE shell
