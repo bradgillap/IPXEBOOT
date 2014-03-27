@@ -91,7 +91,7 @@ goto ${selected}
 ###################### END MAIN MENU ####################################
 ###################### BEGIN TASKS ######################################
 
-####### Built In IPXE Commands ########
+###################### Built In IPXE Commands ###########################
 
 :cancel
   echo You cancelled the menu, dropping you to a shell.
@@ -131,7 +131,7 @@ goto ${selected}
   clear submenu-default
   goto start
 
-####### END OF BUILT IN COMMMANDS ######### 
+################### END OF BUILT IN COMMMANDS ###########################
 
 ####### BEGIN SYSTEM INFO ######### 
 
@@ -145,9 +145,9 @@ goto ${selected}
   chain memdisk
   goto start
 
-####### END SYSTEM INFO ######### 
+##################### END SYSTEM INFO ####################################
 
-####### BEGIN Operating Systems Install ######### 
+##################### BEGIN Operating Systems Install ####################
 
 :freedos
   initrd ${image-dir}/freedosv1.img 
@@ -183,9 +183,9 @@ goto ${selected}
   initrd /winpe7/${arch}/winpe.wim         boot.wim
   boot || goto failed
 
-####### END Operating Systems Install ######### 
+################ END Operating Systems Install ########################### 
 
-####### BEGIN Live Boot Environments ######### 
+################ BEGIN Live Boot Environments ###########################
 
 :hirens
   initrd ${image-dir}/Hiren's.BootCD.15.2.iso 
@@ -242,9 +242,9 @@ goto ${selected}
   boot || goto failed
 
 
-####### END Live Boot Environments ######### 
+###################### END Live Boot Environments ######################
 
-####### START Tools and Utilities ##########
+###################### START Tools and Utilities #######################
 :hdat
   initrd ${image-dir}/HDAT2FDD.IMG
   chain memdisk
