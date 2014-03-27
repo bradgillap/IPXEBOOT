@@ -4,6 +4,7 @@
 :start 
 
 # Only use this if you compiled your ipxe with console and png options see http://ipxe.org/cmd/console
+# I'm so nice I even provide you with the wallpaper. https://github.com/bradgillap/IPXEBOOT/blob/master/boot.png
 console --x 1024 --y 768
 console --picture http://10.0.0.1/boot.png  #1024x768 Graphic
 
