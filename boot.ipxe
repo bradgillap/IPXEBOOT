@@ -1,0 +1,268 @@
+#!ipxe
+
+#beginning of file incase of failure
+:start 
+
+# Some constants I didn't need right away but may be helpful if you have long addresses or directories to keep track of.
+
+set boot-url http://10.0.0.1  #Example http://10.0.0.1  No trailing slashes.
+set nfs-server 10.0.0.1  #Example just the raw IP of the NFS server no slashes
+set nfs-root /srv/tftp/nfs  #Example the raw path to the NFS server in linux. NO trailing slash.
+set image-dir images # Cut down on the hardlinking of directories. Example /boot/images NO trailing slashes.
+
+# Some menu default timeout
+set menu-timeout 1000000
+
+#Set the default menu item selected.
+isset ${menu-default} || set menu-default arch
+
+# Figure out if client is 64-bit capable
+cpuid --ext 29 && set arch x64 || set arch x86
+
+#This is just another way to write the same thing using amd64 and i386 instead of x86 and x64. We use x86 and x64 because it's easier to read for most people.
+#The ubuntu-online install needs this and some others. Notice the difference between the variable $(archl) and $(arch)
+cpuid --ext 29 && set archl amd64 || set archl i386
+
+
+
+###################### MAIN MENU ####################################
+ 
+
+menu Brads Amazing Boot Updated March 2014
+  item --gap --		         ------------------------- System Info -----------------------------------
+  item start                     Architecture: ${arch}
+  item --key 1 hdt          (1)  Hardware Detection Tool
+  item --key 2 pcisniffer   (2)  PCI Sniffer
+  item --gap --             ------------------------- Operating Systems Install ----------------------
+  item --key 3 freedos      (3)  FreeDOS IMG
+  item --key 4 ubuntu-installer-remote (4) Ubuntu ${archl} Dynamic Net Install HTTP WEB
+  item --key 5 winpe8       (5)  WinPE Win8 200 MB+ WIM
+  item --key 6 winpe7       (6)  WinPE Win7 200 MB+ WIM
+  item --gap --             ------------------------- Live Boot Environments -------------------------
+  item --key 7 bootrepair   (7)  Boot Repair ${arch} NFS
+  item --key 8 pmagic       (8)  Parted Magic 400+ MB ISO
+  item --key 9 systemrescue (9)  System Rescue 4.1.0 HTTP
+  item --key a hirens       (A)  Hiren's Boot 15.2 600+ MB ISO
+  item --key b clonezilla   (B)  Clonezilla ${arch} HTTP
+  item --key c gparted      (C)  Gparted ${arch} HTTP
+  item --key d redobackup   (D)  RedoBackup! NFS
+  item --key e deblive64    (E)  Debian Live ONLY X64 V7.4 Wheezy HTTP
+  item --key f ophcrackxp   (F)  Ophcrack Live XP 400mb+ ISO
+  item --key g ophcrackxp   (G)  Ophcrack Live Vista 400mb+ ISO
+  item --gap --             ------------------------- Tools and utilities ----------------------------
+  item --key h memtestx86   (H)  Memtestx86 ISO
+  item --key i hdat         (I)  Hdat Hard Drive Diagnostics IMG
+  item --key j spinrite     (J)  SpinRite V6 HD Repair IMG
+  item --key k dban         (K)  Dban Wipe Warning! DESTRUCTIVE! IMG
+  item --key l ntpassword   (L)  Offline NT Password and Registry Editor WARNING! EFS ENCRYPTION! ISO
+  item --gap --             ------------------------- Advanced options -------------------------------
+  item --key m config       (M)  Configure settings
+  item --key n external     (N)  External Linux Installs http://boot.salstar.sk/
+  item --key s shell        (S)  Drop to iPXE shell
+  item --key r reboot       (R)  Reboot computer
+  item --key x exit         (X)  Exit
+
+choose --timeout ${menu-timeout} --default ${menu-default} selected || goto cancel
+set menu-timeout 0
+goto ${selected}
+
+
+####### Tasks #######
+
+####### Built In IPXE Commands ########
+
+:cancel
+  echo You cancelled the menu, dropping you to a shell
+:shell
+  echo Type 'exit' to get the back to the menu
+  echo Type 'help' for more IPXE commands.
+  echo 
+  echo INTERFACE,IP,SUBNET,GATEWAY
+  echo .......................................
+  echo
+  route
+  echo
+  echo .......................................
+
+  shell
+  set menu-timeout 0
+  set submenu-timeout 0
+  goto start
+
+:failed
+  echo Booting failed, dropping to shell and freeing memory.
+  imgfree
+  goto shell
+
+:reboot
+  reboot
+
+:exit
+  exit 0
+
+:config
+  config
+  goto start
+
+:back
+  set submenu-timeout 0
+  clear submenu-default
+  goto start
+
+####### END OF BUILT IN COMMMANDS ######### 
+
+####### BEGIN SYSTEM INFO ######### 
+
+:hdt
+  initrd ${image-dir}/hdt-0.5.2.img 
+  chain memdisk 
+  goto start
+
+:pcisniffer
+  initrd ${image-dir}/pcisniffer.img
+  chain memdisk
+  goto start
+
+####### END SYSTEM INFO ######### 
+
+####### BEGIN Operating Systems Install ######### 
+
+:freedos
+  initrd ${image-dir}/freedosv1.img 
+  chain memdisk 
+  goto start
+
+# Special set base-url constant for remote host
+:ubuntu-installer-remote
+  echo Starting Ubuntu 12.04 ${archl} installer.
+  set base-url http://no.archive.ubuntu.com/ubuntu/dists/precise/main/installer-${archl}/current/images/netboot/ubuntu-installer/${archl}
+  kernel ${base-url}/linux
+  initrd ${base-url}/initrd.gz
+  #imgargs linux auto=true url=http://yourserver/some/path/preseed.cfg
+  boot || goto failed
+
+:winpe8
+  kernel wimboot
+  initrd /winpe8/${arch}/media/bootmgr                      bootmgr
+  initrd /winpe8/${arch}/media/Boot/BCD                     BCD
+  initrd /winpe8/${arch}/media/Boot/Fonts/segmono_boot.ttf  segmono_boot.ttf
+  initrd /winpe8/${arch}/media/Boot/Fonts/segoe_slboot.ttf  segoe_slboot.ttf
+  initrd /winpe8/${arch}/media/Boot/Fonts/segoen_slboot.ttf segoen_slboot.ttf
+  initrd /winpe8/${arch}/media/Boot/Fonts/wgl4_boot.ttf     wgl4_boot.ttf
+  initrd /winpe8/${arch}/media/Boot/boot.sdi                boot.sdi
+  initrd /winpe8/${arch}/media/sources/boot.wim             boot.wim
+  boot || goto failed
+
+:winpe7
+  kernel wimboot
+  initrd /winpe7/${arch}/ISO/bootmgr       bootmgr
+  initrd /winpe7/${arch}/ISO/boot/bcd      BCD
+  initrd /winpe7/${arch}/ISO/boot/boot.sdi boot.sdi
+  initrd /winpe7/${arch}/winpe.wim         boot.wim
+  boot || goto failed
+
+####### END Operating Systems Install ######### 
+
+####### BEGIN Live Boot Environments ######### 
+
+:hirens
+  initrd ${image-dir}/Hiren's.BootCD.15.2.iso 
+  chain memdisk iso raw 
+  goto start
+
+:clonezilla
+  kernel ${image-dir}/clonezilla/${arch}/vmlinuz boot=live config noswap nolocales edd=on nomodeset vga=788 nosplash noprompt fetch=${boot-url}/${image-dir}/clonezilla/${arch}/filesystem.squashfs
+  initrd ${image-dir}/clonezilla/${arch}/initrd.img
+  boot || goto failed
+
+:gparted
+  kernel ${image-dir}/gparted/${arch}/vmlinuz boot=live config union=aufs noswap noprompt vga=788 fetch=${boot-url}/${image-dir}/gparted/${arch}/filesystem.squashfs 
+  initrd ${image-dir}/gparted/${arch}/initrd.img 
+  boot || goto failed
+
+:redobackup
+  kernel ${image-dir}/redobackup/casper/vmlinuz boot=casper netboot=nfs nfsroot=${nfs-server}:${nfs-root}/redobackup/
+  initrd ${image-dir}/redobackup/casper/initrd.lz
+  boot || goto failed
+
+:bootrepair
+  kernel ${image-dir}bootrepair/${arch}/casper/vmlinuz boot=casper netboot=nfs nfsroot=${nfs-server}:${nfs-root}/bootrepair/${arch}/
+  initrd ${image-dir}/bootrepair/${arch}/casper/initrd.lz
+  boot || goto failed
+
+:systemrescue
+  kernel ${boot-url}/${image-dir}/systemrescue/isolinux/rescue${arch}
+  initrd ${image-dir}/systemrescue/isolinux/initram.igz
+  imgargs rescue${arch} dodhcp netboot=${boot-url}/${image-dir}/systemrescue/sysrcd.dat
+  boot || goto failed
+
+:ophcrackxp
+  initrd ${image-dir}/ophcrack-xp-livecd-3.6.0.iso
+  chain memdisk iso raw 
+  goto start
+
+:ophcrackvista
+  initrd ${image-dir}/ophcrack-vista-livecd-3.6.0.iso 
+  chain memdisk iso raw 
+  goto start
+
+#vmalloc=512 is the ISO + 50mb or so to give it room to breathe in ram. 
+:pmagic
+  initrd ${image-dir}/pmagic_2014_02_26.iso 
+  chain memdisk iso vmalloc=512M 
+  goto start
+
+# x86 version of this has some weird double initd1 and initrd2 that I couldn't figure out. 
+:deblive64
+  kernel ${image-dir}/debian/live/debian-live-7.4-amd64-gnome-desktop+nonfree.vmlinuz
+  initrd ${image-dir}/debian/live/debian-live-7.4-amd64-gnome-desktop+nonfree.initrd.img
+  imgargs debian-live-7.4-amd64-gnome-desktop+nonfree.vmlinuz boot=live config console=ttyS0 username=live fetch=${boot-url}/${image-dir}/debian/live/debian-live-7.4-amd64-gnome-desktop+nonfree.squashfs
+  boot || goto failed
+
+
+####### END Live Boot Environments ######### 
+
+####### START Tools and Utilities ##########
+:hdat
+  initrd ${image-dir}/HDAT2FDD.IMG
+  chain memdisk
+  goto start
+
+:spinrite
+  initrd ${image-dir}/spinritev6.iso 
+  chain memdisk iso raw 
+  goto start
+
+:memtestx86
+  initrd ${image-dir}/memtest86v5.iso 
+  chain memdisk iso raw 
+  goto start
+
+
+
+:ntpassword
+  initrd ${image-dir}/cd140201.iso 
+  chain memdisk iso 
+  goto start
+
+
+# quick explanation of imgargs. We don't need to put the path to DBA.BZI because we just downloaded to a root path.
+:dban
+  kernel ${image-dir}/DBAN.BZI 
+  imgargs DBAN.BZI nuke="dwipe --method gutmann --rounds 2 --verify last" silent vga=785 
+  boot || goto failed
+
+
+# This was just a test for boot.wim. We use winpe instead with injected drivers for lan and disks
+#:wimboot
+  #kernel wimboot
+  #initrd win7/bootmgr          bootmgr 
+  #initrd win7/boot/bcd         BCD 
+  #initrd win7/boot/boot.sdi    boot.sdi 
+  #initrd win7/sources/boot.wim boot.wim 
+  #imgstat
+  #boot|| goto failed
+
+:external
+  chain http://boot.salstar.sk 
+  goto start 
