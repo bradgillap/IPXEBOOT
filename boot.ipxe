@@ -67,20 +67,20 @@ set menu-timeout 0
 goto ${selected}
 
 
-####### Tasks #######
+############################### Tasks ###############################
 
 ####### Built In IPXE Commands ########
 
 :cancel
-  echo You cancelled the menu, dropping you to a shell
+  echo You cancelled the menu, dropping you to a shell.
 :shell
-  echo Type 'exit' to get the back to the menu
+  echo Type 'exit' to get the back to the menu.
   echo Type 'help' for more IPXE commands.
   echo 
   echo INTERFACE,IP,SUBNET,GATEWAY
   echo .......................................
   echo
-  route
+  route #IP INFO
   echo
   echo .......................................
 
