@@ -3,10 +3,7 @@
 #beginning of file incase of failure
 :start 
 
-# Only use this if you compiled your ipxe with console and png options see http://ipxe.org/cmd/console
-# I'm so nice I even provide you with the wallpaper. https://github.com/bradgillap/IPXEBOOT/blob/master/boot.png
-console --x 1024 --y 768
-console --picture http://10.0.0.1/boot.png  #1024x768 Graphic
+
 
 # Some constants I didn't need right away but may be helpful if you have long addresses or directories to keep track of.
 
@@ -14,6 +11,12 @@ set boot-url http://10.0.0.1  #Example http://10.0.0.1  No trailing slashes.
 set nfs-server 10.0.0.1  #Example just the raw IP of the NFS server no slashes
 set nfs-root /srv/tftp/nfs  #Example the raw path to the NFS server in linux. NO trailing slash.
 set image-dir images # Cut down on the hardlinking of directories. Example /boot/images NO trailing slashes.
+set boot-image boot.png  #set your background boot image if you have console vesafb and png turned on. Exmaple: Boot image should go in http://yourwhatever.com/boot.png
+
+# Only use this if you compiled your ipxe with console and png options see http://ipxe.org/cmd/console
+# I'm so nice I even provide you with the wallpaper. https://github.com/bradgillap/IPXEBOOT/blob/master/boot.png
+console --x 1024 --y 768  # I have to put up with some sucky monitors at work.
+console --picture ${boot-url}/${boot-image}  #1024x768 Graphic
 
 # Some menu default timeout
 set menu-timeout 1000000
