@@ -23,38 +23,60 @@ cpuid --ext 29 && set arch x64 || set arch x86
 #The ubuntu-online install needs this and some others. Notice the difference between the variable $(archl) and $(arch)
 cpuid --ext 29 && set archl amd64 || set archl i386
 
+###################### BEGIN VERSION CONSTANTS ##################################
 
+set hdt-version 0.5.20
+set pcisniffer-version 1.5
+set freedos-version 1.1
+set winpe8-version March-2014
+set winpe7-version March-2014
+set bootrepair-version 2013-05-08
+set pmagic-version 2014-02-06
+set systemrescue-version 4.1.0
+set hirens-version 15.2
+set clonezilla-version 2.2.1-25
+set gparted-version 0.18.0-1
+set redobackup-version 1.0.4
+set deblive64-version 7.4-nonfree
+set ophcrackxp-version 3.6.0
+set ophcrackvista-version 3.6.0
+set memtestx86-version 5.01
+set hdat-version 5.0
+set spinrite-version 6.0
+set dban-version 2.2.8
+set ntpassword-version 2014-02-01
 
-###################### MAIN MENU ####################################
+###################### END VERSION CONSTANTS ####################################
+
+###################### BEGIN MAIN MENU ##########################################
  
-
 menu Brads Amazing Boot Updated March 2014
   item --gap --		         ------------------------- System Info -----------------------------------
   item start                     Architecture: ${arch}
-  item --key 1 hdt          (1)  Hardware Detection Tool
-  item --key 2 pcisniffer   (2)  PCI Sniffer
+  item --key 1 hdt          (1)  Hardware Detection Tool ${hdt-version}
+  item --key 2 pcisniffer   (2)  PCI Sniffer ${pcisniffer-version}
   item --gap --             ------------------------- Operating Systems Install ----------------------
-  item --key 3 freedos      (3)  FreeDOS IMG
+  item --key 3 freedos      (3)  FreeDOS ${freedos-version} IMG
   item --key 4 ubuntu-installer-remote (4) Ubuntu ${archl} Dynamic Net Install HTTP WEB
-  item --key 5 winpe8       (5)  WinPE Win8 200 MB+ WIM
-  item --key 6 winpe7       (6)  WinPE Win7 200 MB+ WIM
+  item --key 5 winpe8       (5)  WinPE Win8 ${winpe8-version} 200 MB+ WIM
+  item --key 6 winpe7       (6)  WinPE Win7 ${winpe7-version} 200 MB+ WIM
   item --gap --             ------------------------- Live Boot Environments -------------------------
-  item --key 7 bootrepair   (7)  Boot Repair ${arch} NFS
-  item --key 8 pmagic       (8)  Parted Magic 400+ MB ISO
-  item --key 9 systemrescue (9)  System Rescue 4.1.0 HTTP
-  item --key a hirens       (A)  Hiren's Boot 15.2 600+ MB ISO
-  item --key b clonezilla   (B)  Clonezilla ${arch} HTTP
-  item --key c gparted      (C)  Gparted ${arch} HTTP
-  item --key d redobackup   (D)  RedoBackup! NFS
-  item --key e deblive64    (E)  Debian Live ONLY X64 V7.4 Wheezy HTTP
-  item --key f ophcrackxp   (F)  Ophcrack Live XP 400mb+ ISO
-  item --key g ophcrackxp   (G)  Ophcrack Live Vista 400mb+ ISO
+  item --key 7 bootrepair   (7)  Boot Repair ${arch} ${bootrepair-version} NFS
+  item --key 8 pmagic       (8)  Parted Magic ${pmagic-version} 400+ MB ISO
+  item --key 9 systemrescue (9)  System Rescue ${systemrescue-version} HTTP
+  item --key a hirens       (A)  Hiren's Boot ${hirens-version} 600+ MB ISO
+  item --key b clonezilla   (B)  Clonezilla ${arch} ${clonezilla-version} HTTP
+  item --key c gparted      (C)  Gparted ${arch} ${gparted-version} HTTP 
+  item --key d redobackup   (D)  RedoBackup! ${redobackup-version} NFS
+  item --key e deblive64    (E)  Debian Live ONLY X64 ${deblive64-version} Wheezy HTTP
+  item --key f ophcrackxp   (F)  Ophcrack Live XP ${ophcrackxp-version} 400mb+ ISO
+  item --key g ophcrackvista   (G)  Ophcrack Live Vista ${ophcrackvista-version} 400+ MB ISO
   item --gap --             ------------------------- Tools and utilities ----------------------------
-  item --key h memtestx86   (H)  Memtestx86 ISO
-  item --key i hdat         (I)  Hdat Hard Drive Diagnostics IMG
-  item --key j spinrite     (J)  SpinRite V6 HD Repair IMG
-  item --key k dban         (K)  Dban Wipe Warning! DESTRUCTIVE! IMG
-  item --key l ntpassword   (L)  Offline NT Password and Registry Editor WARNING! EFS ENCRYPTION! ISO
+  item --key h memtestx86   (H)  Memtestx86 ${memtestx86-version} ISO 
+  item --key i hdat         (I)  Hdat ${hdat-version} Hard Drive Diagnostics IMG
+  item --key j spinrite     (J)  SpinRite ${spinrite-version} HD Repair IMG
+  item --key k dban         (K)  Dban ${dban-version} Wipe Warning! DESTRUCTIVE! IMG
+  item --key l ntpassword   (L)  Offline NT Password and Registry Editor ${ntpassword-version} WARNING! EFS ENCRYPTION! ISO
   item --gap --             ------------------------- Advanced options -------------------------------
   item --key m config       (M)  Configure settings
   item --key n external     (N)  External Linux Installs http://boot.salstar.sk/
@@ -66,8 +88,8 @@ choose --timeout ${menu-timeout} --default ${menu-default} selected || goto canc
 set menu-timeout 0
 goto ${selected}
 
-
-############################### Tasks ###############################
+###################### END MAIN MENU ####################################
+###################### BEGIN TASKS ######################################
 
 ####### Built In IPXE Commands ########
 
