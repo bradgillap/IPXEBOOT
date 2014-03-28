@@ -3,8 +3,6 @@
 #beginning of file incase of failure
 :start 
 
-
-
 # Some constants I didn't need right away but may be helpful if you have long addresses or directories to keep track of.
 
 set boot-url http://10.0.0.1  #Example http://10.0.0.1  No trailing slashes.
@@ -216,7 +214,7 @@ goto ${selected}
   boot || goto failed
 
 :bootrepair
-  kernel ${image-dir}bootrepair/${arch}/casper/vmlinuz boot=casper netboot=nfs nfsroot=${nfs-server}:${nfs-root}/bootrepair/${arch}/
+  kernel ${image-dir}/bootrepair/${arch}/casper/vmlinuz boot=casper netboot=nfs nfsroot=${nfs-server}:${nfs-root}/bootrepair/${arch}/
   initrd ${image-dir}/bootrepair/${arch}/casper/initrd.lz
   boot || goto failed
 
@@ -249,7 +247,6 @@ goto ${selected}
   imgargs debian-live-7.4-amd64-gnome-desktop+nonfree.vmlinuz boot=live config console=ttyS0 username=live fetch=${boot-url}/${image-dir}/debian/live/debian-live-7.4-amd64-gnome-desktop+nonfree.squashfs
   boot || goto failed
 
-
 ###################### END Live Boot Environments ######################
 
 ###################### START Tools and Utilities #######################
@@ -268,20 +265,16 @@ goto ${selected}
   chain memdisk iso raw 
   goto start
 
-
-
 :ntpassword
   initrd ${image-dir}/cd140201.iso 
   chain memdisk iso 
   goto start
-
-
+  
 # quick explanation of imgargs. We don't need to put the path to DBA.BZI because we just downloaded to a root path.
 :dban
   kernel ${image-dir}/DBAN.BZI 
   imgargs DBAN.BZI nuke="dwipe --method gutmann --rounds 2 --verify last" silent vga=785 
   boot || goto failed
-
 
 # This was just a test for boot.wim. We use winpe instead with injected drivers for lan and disks
 #:wimboot
