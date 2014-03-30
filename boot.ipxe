@@ -20,7 +20,7 @@ console --picture ${boot-url}/${boot-image}  #1024x768 Graphic
 set menu-timeout 1000000
 
 #Set the default menu item selected.
-isset ${menu-default} || set menu-default arch
+isset ${menu-default} || set menu-default exit
 
 # Figure out if client is 64-bit capable
 cpuid --ext 29 && set arch x64 || set arch x86
@@ -55,10 +55,12 @@ set ntpassword-version 2014-02-01
 ###################### END VERSION CONSTANTS ####################################
 
 ###################### BEGIN MAIN MENU ##########################################
- 
+#GOTO line for changing architecture so it doesn't run the arch command again.
+:menu
 menu IPXE SUPERBOOT UPDATED ${master-version}
   item --gap --		         ------------------------- System Info -------------------------------------------------------------------------------------
   item start                     Architecture: ${arch}
+  item --key 0 changearch	(0)	 Switch Opposite Architecture
   item --key 1 hdt          (1)  Hardware Detection Tool ${hdt-version}
   item --key 2 pcisniffer   (2)  PCI Sniffer ${pcisniffer-version}
   item --gap --             ------------------------- Operating Systems Install -------------------------------------------------------------------------
@@ -137,6 +139,10 @@ goto ${selected}
   clear submenu-default
   goto start
 
+# This forces the document to do the opposite architecture from the menu down. 
+:changearch
+  cpuid --ext 29 && set arch x86 || set arch x64
+  goto menu
 ################### END OF BUILT IN COMMMANDS ###########################
 
 ####### BEGIN SYSTEM INFO ######### 
