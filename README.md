@@ -18,3 +18,7 @@ I put this up because I feel like there aren't enough examples of IPXE on the In
 Screenshot of pxeboot menu.
 
 https://github.com/bradgillap/IPXEBOOT/blob/master/screenshot.png
+
+```html
+<img src="https://github.com/bradgillap/IPXEBOOT/blob/master/screenshot.png">
+```
