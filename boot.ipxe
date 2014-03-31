@@ -32,7 +32,7 @@ cpuid --ext 29 && set archl amd64 || set archl i386
 ###################### BEGIN VERSION CONSTANTS ##################################
 set master-version March-2014
 set hdt-version 0.5.20
-set pcisniffer-version 1.5
+set astra-version 6.14
 set freedos-version 1.1
 set winpe8-version March-2014
 set winpe7-version March-2014
@@ -51,7 +51,9 @@ set hdat-version 5.0
 set spinrite-version 6.0
 set dban-version 2.2.8
 set ntpassword-version 2014-02-01
-
+set konboot-version 2.4
+set acronis-version 2014
+set trinity-version 372
 ###################### END VERSION CONSTANTS ####################################
 
 ###################### BEGIN MAIN MENU ##########################################
@@ -59,35 +61,40 @@ set ntpassword-version 2014-02-01
 :menu
 menu IPXE SUPERBOOT UPDATED ${master-version}
   item --gap --		         ------------------------- System Info -------------------------------------------------------------------------------------
-  item start                     Architecture: ${arch}
-  item --key 0 changearch	(0)	 Switch Opposite Architecture
-  item --key 1 hdt          (1)  Hardware Detection Tool ${hdt-version}
-  item --key 2 pcisniffer   (2)  PCI Sniffer ${pcisniffer-version}
+  item --key 0 start        (0)  Architecture: ${arch} - Reset?  #If user chooses this it reset the arch.
+  item --key 1 changearch	(1)	 Switch Opposite Architecture
+  item --key 2 netinfo      (2)  Network Card Info
+  item --key 3 lspci        (3)  PCI Detection Info
+  item --key 4 hdt          (4)  Hardware Detection Tool ${hdt-version}
+  item --key 5 astra        (5)  Astra System Info ${astra-version}
   item --gap --             ------------------------- Operating Systems Install -------------------------------------------------------------------------
-  item --key 3 freedos      (3)  FreeDOS ${freedos-version} IMG
-  item --key 4 ubuntu-installer-remote (4) Ubuntu ${archl} Dynamic Net Install HTTP WEB
-  item --key 5 winpe8       (5)  WinPE Win8 ${winpe8-version} 200 MB+ WIM
-  item --key 6 winpe7       (6)  WinPE Win7 ${winpe7-version} 200 MB+ WIM
+  item --key 6 freedos      (6)  FreeDOS ${freedos-version} IMG
+  item --key 7 winpe7       (7)  WinPE Win7 ${winpe7-version} 200 MB+ WIM
+  item --key 8 winpe8       (8)  WinPE Win8 ${winpe8-version} 200 MB+ WIM
+  item --key 9 ubuntu-installer-remote (9) Ubuntu ${archl} Dynamic Net Install HTTP WEB
   item --gap --             ------------------------- Live Boot Environments ----------------------------------------------------------------------------
-  item --key 7 bootrepair   (7)  Boot Repair ${arch} ${bootrepair-version} NFS
-  item --key 8 pmagic       (8)  Parted Magic ${pmagic-version} 400+ MB ISO
-  item --key 9 systemrescue (9)  System Rescue ${systemrescue-version} HTTP
-  item --key a hirens       (A)  Hiren's Boot ${hirens-version} 600+ MB ISO
-  item --key b clonezilla   (B)  Clonezilla ${arch} ${clonezilla-version} HTTP
-  item --key c gparted      (C)  Gparted ${arch} ${gparted-version} HTTP 
-  item --key d redobackup   (D)  RedoBackup! ${redobackup-version} NFS
-  item --key e deblive64    (E)  Debian Live ONLY X64 ${deblive64-version} Wheezy HTTP
-  item --key f ophcrackxp   (F)  Ophcrack Live XP ${ophcrackxp-version} 400mb+ ISO
-  item --key g ophcrackvista   (G)  Ophcrack Live Vista ${ophcrackvista-version} 400+ MB ISO
+  item --key a bootrepair   (A)  Boot Repair ${arch} ${bootrepair-version} NFS
+  item --key b pmagic       (B)  Parted Magic ${pmagic-version} 400+ MB ISO
+  item --key c systemrescue (C)  System Rescue ${systemrescue-version} HTTP
+  item --key d trinity      (D)  Trinity Rescue ${trinity-version}
+  item --key e hirens       (E)  Hiren's Boot ${hirens-version} 600+ MB ISO
+  item --key f clonezilla   (F)  Clonezilla ${arch} ${clonezilla-version} HTTP
+  item --key g gparted      (G)  Gparted ${arch} ${gparted-version} HTTP 
+  item --key h redobackup   (H)  RedoBackup! ${redobackup-version} NFS
+  item --key i acronis      (I)  Acronis ${acronis-version} 350+ MB ISO
+  item --key j deblive64    (J)  Debian Live ONLY X64 ${deblive64-version} Wheezy HTTP
+  item --key k ophcrackxp   (K)  Ophcrack Live XP ${ophcrackxp-version} 400+ MB ISO
+  item --key l ophcrackvista   (L)  Ophcrack Live Vista ${ophcrackvista-version} 400+ MB ISO
   item --gap --             ------------------------- Tools and utilities -------------------------------------------------------------------------------
-  item --key h memtestx86   (H)  Memtestx86 ${memtestx86-version} ISO 
-  item --key i hdat         (I)  Hdat ${hdat-version} Hard Drive Diagnostics IMG
-  item --key j spinrite     (J)  SpinRite ${spinrite-version} HD Repair IMG
-  item --key k dban         (K)  Dban ${dban-version} Wipe Warning! DESTRUCTIVE! IMG
-  item --key l ntpassword   (L)  Offline NT Password and Registry Editor ${ntpassword-version} WARNING! EFS ENCRYPTION! ISO
+  item --key m memtestx86   (M)  Memtestx86 ${memtestx86-version} ISO 
+  item --key n hdat         (N)  Hdat ${hdat-version} Hard Drive Diagnostics IMG
+  item --key o spinrite     (O)  SpinRite ${spinrite-version} HD Repair IMG
+  item --key p dban         (P)  Dban ${dban-version} Wipe Warning! DESTRUCTIVE! IMG
+  item --key q ntpassword   (Q)  Offline NT Password and Registry Editor ${ntpassword-version} WARNING! EFS ENCRYPTION! ISO
+  item --key v konboot 		(V)  Kon-boot ${konboot-version} 
   item --gap --             ------------------------- Advanced options -----------------------------------------------------------------------------------
-  item --key m config       (M)  Configure settings
-  item --key n external     (N)  External Linux Installs http://boot.salstar.sk/
+  item --key z config       (Z)  Configure settings
+  item --key t external     (T)  External Linux Installs http://boot.salstar.sk/
   item --key s shell        (S)  Drop to iPXE shell
   item --key r reboot       (R)  Reboot computer
   item --key x exit         (X)  Exit
@@ -149,13 +156,48 @@ goto ${selected}
 
 :hdt
   initrd ${image-dir}/hdt-0.5.2.img 
-  chain memdisk 
-  goto start
+  chain memdisk || goto failed
 
-:pcisniffer
-  initrd ${image-dir}/pcisniffer.img
-  chain memdisk
-  goto start
+:astra
+  initrd ${image-dir}/astraiso.iso
+  chain memdisk iso raw || goto failed
+
+:netinfo
+menu Select network card
+item netX Default (netX)
+set idx:int32 0
+:sel_card_loop isset ${net${idx}/mac} || goto sel_card_done
+  item net${idx} net${idx}
+  inc idx && goto sel_card_loop
+:sel_card_done
+choose netcard || goto start
+
+:netinfo_show
+menu Network info for ${netcard}
+item --gap Chip:
+item chip ${space} ${${netcard}/chip}
+item --gap MAC:
+item mac ${space} ${${netcard}/mac}
+item --gap IP/mask:
+item ip ${space} ${${netcard}/ip}/${${netcard}/netmask}
+item --gap Gateway:
+item gw ${space} ${${netcard}/gateway}
+item --gap Domain:
+item domain ${space} ${${netcard}/domain}
+item --gap DNS:
+item dns ${space} ${${netcard}/dns}
+item --gap DHCP server:
+item dhcpserver ${space} ${${netcard}/dhcp-server}
+item --gap Next-server:
+item nextserver ${space} ${next-server}
+item --gap Filename:
+item filename ${space} ${${netcard}/filename}
+choose empty ||
+goto start
+
+:lspci
+chain ${boot-url}/lspci.ipxe
+goto start
 
 ##################### END SYSTEM INFO ####################################
 
@@ -163,8 +205,7 @@ goto ${selected}
 
 :freedos
   initrd ${image-dir}/freedosv1.img 
-  chain memdisk 
-  goto start
+  chain memdisk || goto failed
 
 # Special set base-url constant for remote host
 :ubuntu-installer-remote
@@ -201,8 +242,7 @@ goto ${selected}
 
 :hirens
   initrd ${image-dir}/Hiren's.BootCD.15.2.iso 
-  chain memdisk iso raw 
-  goto start
+  chain memdisk iso raw || goto failed
 
 :clonezilla
   kernel ${image-dir}/clonezilla/${arch}/vmlinuz boot=live config noswap nolocales edd=on nomodeset vga=788 nosplash noprompt fetch=${boot-url}/${image-dir}/clonezilla/${arch}/filesystem.squashfs
@@ -219,6 +259,14 @@ goto ${selected}
   initrd ${image-dir}/redobackup/casper/initrd.lz
   boot || goto failed
 
+:acronis
+  initrd ${image-dir}/acronis2014.iso 
+  chain memdisk iso raw || goto failed
+
+:trinity
+  initrd ${image-dir}/trinity-rescue-kit.3.4-build-372.iso
+  chain memdisk iso || goto failed
+
 :bootrepair
   kernel ${image-dir}/bootrepair/${arch}/casper/vmlinuz boot=casper netboot=nfs nfsroot=${nfs-server}:${nfs-root}/bootrepair/${arch}/
   initrd ${image-dir}/bootrepair/${arch}/casper/initrd.lz
@@ -232,19 +280,16 @@ goto ${selected}
 
 :ophcrackxp
   initrd ${image-dir}/ophcrack-xp-livecd-3.6.0.iso
-  chain memdisk iso raw 
-  goto start
+  chain memdisk iso raw || goto failed
 
 :ophcrackvista
   initrd ${image-dir}/ophcrack-vista-livecd-3.6.0.iso 
-  chain memdisk iso raw 
-  goto start
+  chain memdisk iso raw || goto failed
 
 #vmalloc=512 is the ISO + 50mb or so to give it room to breathe in ram. 
 :pmagic
   initrd ${image-dir}/pmagic_2014_02_26.iso 
-  chain memdisk iso vmalloc=512M 
-  goto start
+  chain memdisk iso vmalloc=512M || goto failed
 
 # x86 version of this has some weird double initd1 and initrd2 that I couldn't figure out. 
 :deblive64
@@ -258,24 +303,24 @@ goto ${selected}
 ###################### START Tools and Utilities #######################
 :hdat
   initrd ${image-dir}/HDAT2FDD.IMG
-  chain memdisk
-  goto start
+  chain memdisk || goto failed
 
 :spinrite
   initrd ${image-dir}/spinritev6.iso 
-  chain memdisk iso raw 
-  goto start
+  chain memdisk iso raw || goto failed
 
 :memtestx86
-  initrd ${image-dir}/memtest86v5.iso 
-  chain memdisk iso raw 
-  goto start
+  initrd ${image-dir}/memtest86v5.iso || goto failed
+  chain memdisk iso raw || goto failed
 
 :ntpassword
   initrd ${image-dir}/cd140201.iso 
-  chain memdisk iso 
-  goto start
-  
+  chain memdisk iso || goto failed
+
+:konboot
+  initrd ${image-dir}/kon-boot.img
+  chain memdisk || goto failed
+
 # quick explanation of imgargs. We don't need to put the path to DBA.BZI because we just downloaded to a root path.
 :dban
   kernel ${image-dir}/DBAN.BZI 
@@ -290,8 +335,8 @@ goto ${selected}
   #initrd win7/boot/boot.sdi    boot.sdi 
   #initrd win7/sources/boot.wim boot.wim 
   #imgstat
-  #boot|| goto failed
+  #boot || goto failed
 
 :external
-  chain http://boot.salstar.sk 
+  chain http://boot.salstar.sk || goto failed
   goto start 
